@@ -54,10 +54,6 @@ public class SalvoController {
         return score.stream().map(player -> player.getAllScoreDTO()).collect(Collectors.toList());
     }
 
-    @RequestMapping("/login")
-    public Object login(){return this.isGuest(null);
-    }
-
 
     private Map<String, Object> getPlayer(Player player) {
         Map<String, Object> pdto = new LinkedHashMap<String, Object>();

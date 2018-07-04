@@ -239,14 +239,18 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-				.antMatchers("/web/leaderBoard").fullyAuthenticated()
-				.antMatchers("/rest/*").hasAuthority("ADMIN")
-				.antMatchers("/web/*").hasAuthority("USER")
-				.antMatchers("/api/login").permitAll()
-				.anyRequest().fullyAuthenticated()asdasad;
+				.antMatchers("/api/game_view/**").hasAuthority("USER")
+				.antMatchers("/web/game.html").hasAuthority("USER")
+				.antMatchers("/web/leaderBoard").hasAuthority("USER")
+				.antMatchers("/api/**").permitAll()
+				.antMatchers("/web/**").permitAll()
+
+				.anyRequest().fullyAuthenticated()
+
+				.anyRequest().permitAll();
 
 	http.formLogin()
-		.usernameParameter("email")
+		.usernameParameter("username")
     	.passwordParameter("password")
     	.loginPage("/api/login");
 
