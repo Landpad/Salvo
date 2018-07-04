@@ -1,0 +1,62 @@
+.ship-piece{
+    background-color: darkslateblue;
+}
+
+.ship-piece-hited{
+
+    font-weight: bold;
+    color: darkslateblue; center-fixed;
+    background-image:url('img/shiphit.png');
+    background-repeat: no-repeat;
+    height:25px;
+    widtht:100%;
+
+}
+
+.salvo{
+    background-color: crimson;
+
+}
+
+body{
+  background: url(fondo.png) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+h2{
+
+}
+
+tr {
+    center;
+     height: 5px;
+        width: 5%;
+        background-color:rgba(0, 0, 0, 0.5);
+
+
+}
+
+td {
+    text-align: center;
+     height: 5px;
+        width: 5%;
+        background-color: transparent;
+
+}
+
+thead {
+
+text-align: center;
+     height: 5px;
+        width: 5%;
+        background-color: transparent;
+        background-image:
+
+}
+
+
+
+
