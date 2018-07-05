@@ -5,10 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.jws.soap.SOAPBinding;
+import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -27,12 +31,20 @@ public class SalvoController {
     GamePlayerRepository repoGameplayer;
 
     @Autowired
-    PlayerRepository repoPlayer;
+     PlayerRepository repoPlayer;
 
 
     @RequestMapping("/games")
-    public Object games() {
-        return guestDTO();
+    public Object games(Authentication authentication) {
+        Map<String, Object> gamedto = new LinkedHashMap<>();
+        if (isGuest (authentication) == true){
+            gamedto.put("player", "Guest");
+            return gamedto;
+        } else {
+            gamedto.put("player", this.playerautenticated(authentication));
+            gamedto.put("games", repoGames.findAll().stream().map(s->s.getDTO()).collect(toList()));
+            return gamedto;
+        }
     }
 
     @RequestMapping("/game_view/{id}")
@@ -71,21 +83,23 @@ public class SalvoController {
             return dto;
         }).collect(Collectors.toList());
     }
-
-
-    public Object guestDTO(){
-        Map<String, Object> dto = new LinkedHashMap<String, Object>();
-        dto.put("player", this.isGuest(null));
-        dto.put("games", repoGames.findAll().stream().map(s->s.getDTO()).collect(toList()));
-        return dto;
-    }
-
+    
     private boolean isGuest(Authentication authentication) {
         return authentication == null || authentication instanceof AnonymousAuthenticationToken;
     }
 
-}
+    private Object playerautenticated(Authentication authentication){
+        Map<String, Object> playerdto = new LinkedHashMap<>();
+        playerdto.put("id", repoPlayer.findByUserName(authentication.getName()).getId());
+        playerdto.put("name", repoPlayer.findByUserName(authentication.getName()).getemail());
+        return playerdto;
+    }
 
+
+
+
+
+}
 
 
 
