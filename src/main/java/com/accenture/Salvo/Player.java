@@ -36,9 +36,9 @@ public class Player {
 
     public Player() { }
 
-    public Player(String email, String name, String password) {
+    public Player(String username, String name, String password) {
 
-        this.userName = email;
+        this.userName = username;
         this.firstName = name;
         this.password = password;
     }
@@ -47,9 +47,6 @@ public class Player {
     }
     public void setFirstName(String firstName) {
         this.firstName = firstName;
-    }
-    public String getLastName() {
-        return lastName;
     }
     public void setLastName(String lastName) {
         this.lastName = lastName;
@@ -144,13 +141,6 @@ public class Player {
         pdto.put("email", this.getemail());
         return pdto;
     }
-
-
-
-    /*public Object getPlayerScore (){
-        return scores.stream().collect(maxBy(Comparator.comparing(Score::getScore))).orElse(null);
-    }*/
-
 
 }
 
