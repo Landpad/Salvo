@@ -2,6 +2,8 @@ package com.accenture.Salvo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -66,6 +68,24 @@ public class SalvoController {
         return score.stream().map(player -> player.getAllScoreDTO()).collect(Collectors.toList());
     }
 
+    @RequestMapping(path = "/players", method = RequestMethod.POST)
+    public ResponseEntity<Map<String, Object>> createPlayer(@RequestParam String name, String username, String password) {
+        if (name.isEmpty()) {
+            return new ResponseEntity<>(makeMap("error", "No name"), HttpStatus.FORBIDDEN);
+        }
+        Player player = repoPlayer.findByUserName(name);
+        if (player != null) {
+            return new ResponseEntity<>(makeMap("error", "Username already exists"), HttpStatus.CONFLICT);
+        }
+        Player newPlayer = repoPlayer.save(new Player(username,name,password));
+        return new ResponseEntity<>(makeMap("id", newPlayer.getId()), HttpStatus.CREATED);
+    }
+
+    private Map<String, Object> makeMap(String key, Object value) {
+        Map<String, Object> map = new HashMap<>();
+        map.put(key, value);
+        return map;
+    }
 
     private Map<String, Object> getPlayer(Player player) {
         Map<String, Object> pdto = new LinkedHashMap<String, Object>();
@@ -83,7 +103,7 @@ public class SalvoController {
             return dto;
         }).collect(Collectors.toList());
     }
-    
+
     private boolean isGuest(Authentication authentication) {
         return authentication == null || authentication instanceof AnonymousAuthenticationToken;
     }
@@ -94,10 +114,6 @@ public class SalvoController {
         playerdto.put("name", repoPlayer.findByUserName(authentication.getName()).getemail());
         return playerdto;
     }
-
-
-
-
 
 }
 
