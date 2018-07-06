@@ -41,13 +41,15 @@ public class SalvoController {
         Map<String, Object> gamedto = new LinkedHashMap<>();
         if (isGuest (authentication) == true){
             gamedto.put("player", "Guest");
-            return gamedto;
         } else {
             gamedto.put("player", this.playerautenticated(authentication));
-            gamedto.put("games", repoGames.findAll().stream().map(s->s.getDTO()).collect(toList()));
-            return gamedto;
+
         }
-    }
+        gamedto.put("games", repoGames.findAll().stream().map(s->s.getDTO()).collect(toList()));
+        return gamedto;
+
+
+}
 
     @RequestMapping("/game_view/{id}")
     public Object getGameById(@PathVariable("id") String gamePlayerId) {
@@ -69,15 +71,15 @@ public class SalvoController {
     }
 
     @RequestMapping(path = "/players", method = RequestMethod.POST)
-    public ResponseEntity<Map<String, Object>> createPlayer(@RequestParam String name, String username, String password) {
-        if (name.isEmpty()) {
-            return new ResponseEntity<>(makeMap("error", "No name"), HttpStatus.FORBIDDEN);
+    public ResponseEntity<Map<String, Object>> createPlayer(@RequestParam String username, String password) {
+        if (username.isEmpty()) {
+            return new ResponseEntity<>(makeMap("error", "No name"), HttpStatus.BAD_REQUEST);
         }
-        Player player = repoPlayer.findByUserName(name);
+        Player player = repoPlayer.findByUserName(username);
         if (player != null) {
             return new ResponseEntity<>(makeMap("error", "Username already exists"), HttpStatus.CONFLICT);
         }
-        Player newPlayer = repoPlayer.save(new Player(username,name,password));
+        Player newPlayer = repoPlayer.save(new Player(username,password));
         return new ResponseEntity<>(makeMap("id", newPlayer.getId()), HttpStatus.CREATED);
     }
 
@@ -90,7 +92,7 @@ public class SalvoController {
     private Map<String, Object> getPlayer(Player player) {
         Map<String, Object> pdto = new LinkedHashMap<String, Object>();
         pdto.put("id", player.getId());
-        pdto.put("email", player.getemail());
+        pdto.put("email", player.getusername());
         return pdto;
     }
 
@@ -111,9 +113,10 @@ public class SalvoController {
     private Object playerautenticated(Authentication authentication){
         Map<String, Object> playerdto = new LinkedHashMap<>();
         playerdto.put("id", repoPlayer.findByUserName(authentication.getName()).getId());
-        playerdto.put("name", repoPlayer.findByUserName(authentication.getName()).getemail());
+        playerdto.put("name", repoPlayer.findByUserName(authentication.getName()).getusername());
         return playerdto;
     }
+
 
 }
 
