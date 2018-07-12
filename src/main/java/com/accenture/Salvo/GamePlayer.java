@@ -26,10 +26,10 @@ public class GamePlayer {
     @JoinColumn(name = "game_id")
     private Game games;
 
-    @OneToMany(mappedBy = "gamePlayer", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "gamePlayer", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     Set<Ship> ships;
 
-    @OneToMany(mappedBy = "gamePlayer", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "gamePlayer", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     Set<Salvo> salvos;
 
     public GamePlayer() {
@@ -89,12 +89,11 @@ public class GamePlayer {
         return ships.stream().map(s -> s.getShipDTO()).collect(toList());
     }
 
-    public void addShips (List<Ship> ships){
-        ships.forEach(ship -> {
-            ship.setGameplayers(this);
-            ships.add(ship);
-        });
+    public List<Object> getGamePlayerSalvosDTO() {
+        return salvos.stream().map(s -> s.getSalvoDTO()).collect(toList());
     }
+
+
 
     public Object gamePlayer() {
             Map<String, Object> dto = new LinkedHashMap<>();
@@ -103,6 +102,18 @@ public class GamePlayer {
             dto.put("joindate", this.getJoinDate());
             return dto;
         }
+
+    public void addShips (List<Ship> ships){
+        ships.forEach(ship -> {
+            ship.setGameplayers(this);
+            ships.add(ship);
+        });
+    }
+
+    public void addSalvo (Salvo salvo){
+        salvo.setGameplayers(this);
+        salvos.add(salvo);
+    }
 
     }
 

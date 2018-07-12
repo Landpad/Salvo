@@ -164,6 +164,48 @@ public class SalvoController {
         return new ResponseEntity<>(makeMap("error", "Fleet complete"), HttpStatus.FORBIDDEN);
     }
 
+    @RequestMapping (path = "/games/players/{id}/salvoes", method = RequestMethod.GET) // posible Salvo
+    public Object getSalvos (@PathVariable("id") Long salvoId){
+        Map<String,Object> salvoPlacement = new LinkedHashMap<>();
+        Player player = this.getAuthPlayer();
+        GamePlayer gamePlayer = repoGameplayer.findOne(salvoId);
+        if (getAuthPlayer() == null || getAuthPlayer().getId() != gamePlayer.getPlayers().getId()) {
+            return new ResponseEntity<>(makeMap("error", "Please log in"), HttpStatus.UNAUTHORIZED);
+        }
+        if (gamePlayer == null) {         //posible inminente
+            return new ResponseEntity<>(makeMap("error", "GamePlayer Doesn´t exist"), HttpStatus.UNAUTHORIZED);
+        }
+
+        salvoPlacement.put("salvos", gamePlayer.getGamePlayerSalvosDTO());
+        salvoPlacement.put("gpid", gamePlayer.getId());
+        return salvoPlacement;
+    }
+
+    @RequestMapping(path = "/games/players/{id}/salvoes", method = RequestMethod.POST)
+    public ResponseEntity<Map<String, Object>> setSalvos(@PathVariable long id, @RequestBody Salvo salvo, Authentication authentication) {
+
+        GamePlayer gamePlayer = repoGameplayer.findById(id);
+        Player playerAuth = getAuthPlayer();
+        if (gamePlayer == null){
+            if (playerAuth == null || playerAuth.getId() != gamePlayer.getPlayer().getId()){
+                return new ResponseEntity<>(makeMap("error", "Unauthorized"), HttpStatus.UNAUTHORIZED);
+            }
+
+            if (gamePlayer.getSalvos().size() >= 5) {
+                return new ResponseEntity<>(makeMap("error", "All Salvos Shooted already"), HttpStatus.FORBIDDEN);
+            }
+
+            gamePlayer.addSalvo(salvo);
+            repoGameplayer.save(gamePlayer);
+
+            return new ResponseEntity<>(makeMap("Success", "Salvo Shooted"),HttpStatus.CREATED);
+
+        }
+        return new ResponseEntity<>(makeMap("error", "Unauthorized"), HttpStatus.UNAUTHORIZED);
+    }
+
+
+
     private Map<String, Object> makeMap(String key, Object value) {
         Map<String, Object> map = new HashMap<>();
         map.put(key, value);
@@ -210,6 +252,7 @@ public class SalvoController {
         dto.put("gamePlayers", this.gamePlayer(gameplayer.getGames()));
         dto.put("ships", gameplayer.getGamePlayerShipsDTO());
         dto.put("salvoes", gameplayer.getGames().getGameSalvosDTO());
+        dto.put("hits", )
         return dto;
     }
 
