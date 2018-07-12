@@ -57,10 +57,6 @@ public class GamePlayer {
         return players;
     }
 
-    public Ship getShip() {
-        return getShip();
-    }
-
     public Game getGames() {
         return games;
     }
@@ -93,6 +89,13 @@ public class GamePlayer {
         return ships.stream().map(s -> s.getShipDTO()).collect(toList());
     }
 
+    public void addShips (List<Ship> ships){
+        ships.forEach(ship -> {
+            ship.setGameplayers(this);
+            ships.add(ship);
+        });
+    }
+
     public Object gamePlayer() {
             Map<String, Object> dto = new LinkedHashMap<>();
             dto.put("id", this.getId());
@@ -100,6 +103,7 @@ public class GamePlayer {
             dto.put("joindate", this.getJoinDate());
             return dto;
         }
+
     }
 
 
