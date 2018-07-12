@@ -28,8 +28,7 @@ public class Player {
     @OneToMany(mappedBy="player", fetch=FetchType.EAGER)
     Set<Score> scores;
 
-    private String firstName;
-    private String lastName;
+
     private String userName;
     private String password;
 
@@ -41,28 +40,17 @@ public class Player {
         this.userName = email;
         this.password = password;
     }
-    public String getFirstName() {
-        return firstName;
-    }
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-    public String getLastName() {
-        return lastName;
-    }
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-    public String getemail() {
+
+    public String getusername() {
         return userName;
     }
-    public void setUserName (String userName) {
+    public void setusername (String userName) {
         this.userName = userName;
     }
     public Long getId () {return id; }
 
-    public String toString() {
-        return firstName + " " + lastName;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public Set<Score> getScores() {
@@ -140,16 +128,9 @@ public class Player {
     public Map<String, Object> getPlayer() {
         Map<String, Object> pdto = new LinkedHashMap<String, Object>();
         pdto.put("id", this.getId());
-        pdto.put("email", this.getemail());
+        pdto.put("email", this.getusername());
         return pdto;
     }
-
-
-
-    /*public Object getPlayerScore (){
-        return scores.stream().collect(maxBy(Comparator.comparing(Score::getScore))).orElse(null);
-    }*/
-
 
 }
 

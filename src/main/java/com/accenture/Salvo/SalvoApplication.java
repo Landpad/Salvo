@@ -43,10 +43,10 @@ public class SalvoApplication {
 		return (args) -> {
 			// save a couple of customers
 
-			Player Player1 = new Player("j.bauer@ctu.gov","Jack","24");
-			Player Player2 = new Player("c.obrian@ctu.gov","Chloe","42");
-			Player Player3 = new Player("kim_bauer@gmail.com","Kim","kb");
-			Player Player4 = new Player("t.almeida@ctu.gov","Tony","mole");
+			Player Player1 = new Player("j.bauer@ctu.gov","24");
+			Player Player2 = new Player("c.obrian@ctu.gov","42");
+			Player Player3 = new Player("kim_bauer@gmail.com","kb");
+			Player Player4 = new Player("t.almeida@ctu.gov","mole");
 			playerRepository.save(Player1);
 			playerRepository.save(Player2);
 			playerRepository.save(Player3);
@@ -79,20 +79,26 @@ public class SalvoApplication {
 			Date joinDate = new Date();
 			GamePlayer gamePlayer1 = new GamePlayer(Game1, Player1, joinDate);
 			GamePlayer gamePlayer2 = new GamePlayer(Game1, Player2, joinDate);
+
 			GamePlayer gamePlayer3 = new GamePlayer(Game2, Player1, joinDate);
 			GamePlayer gamePlayer4 = new GamePlayer(Game2, Player2, joinDate);
+
 			GamePlayer gamePlayer5 = new GamePlayer(Game3, Player2, joinDate);
 			GamePlayer gamePlayer6 = new GamePlayer(Game3, Player4, joinDate);
+
 			GamePlayer gamePlayer7 = new GamePlayer(Game4, Player2, joinDate);
 			GamePlayer gamePlayer8 = new GamePlayer(Game4, Player1, joinDate);
+
 			GamePlayer gamePlayer9 = new GamePlayer(Game5, Player4, joinDate);
 			GamePlayer gamePlayer10 = new GamePlayer(Game5, Player1, joinDate);
+
 			GamePlayer gamePlayer11= new GamePlayer(Game6, Player3, joinDate);
-			GamePlayer gamePlayer12 = new GamePlayer(Game6, null, joinDate);
-			GamePlayer gamePlayer13 = new GamePlayer(Game7, Player4, joinDate);
-			GamePlayer gamePlayer14 = new GamePlayer(Game7, null, joinDate);
-			GamePlayer gamePlayer15 = new GamePlayer(Game8, Player3, joinDate);
-			GamePlayer gamePlayer16 = new GamePlayer(Game8, Player4, joinDate);
+
+
+			GamePlayer gamePlayer12 = new GamePlayer(Game7, Player4, joinDate);
+
+			GamePlayer gamePlayer13 = new GamePlayer(Game8, Player3, joinDate);
+			GamePlayer gamePlayer14 = new GamePlayer(Game8, Player4, joinDate);
 
 
 			gamePlayerRepository.save(gamePlayer1);
@@ -101,6 +107,15 @@ public class SalvoApplication {
 			gamePlayerRepository.save(gamePlayer4);
 			gamePlayerRepository.save(gamePlayer5);
 			gamePlayerRepository.save(gamePlayer6);
+			gamePlayerRepository.save(gamePlayer7);
+			gamePlayerRepository.save(gamePlayer8);
+			gamePlayerRepository.save(gamePlayer9);
+			gamePlayerRepository.save(gamePlayer10);
+			gamePlayerRepository.save(gamePlayer11);
+			gamePlayerRepository.save(gamePlayer12);
+			gamePlayerRepository.save(gamePlayer13);
+			gamePlayerRepository.save(gamePlayer14);
+
 
 			List<String> lista1 = Arrays.asList("H1","H2","H3","H4");
 			List<String> lista2 = Arrays.asList("F3","G3","H3");
@@ -222,7 +237,7 @@ class WebSecurityConfiguration extends GlobalAuthenticationConfigurerAdapter {
 		auth.userDetailsService(inputName-> {
 			Player player = repoPlayer.findByUserName(inputName);
 			if (player != null) {
-				return new User(player.getemail(), player.getPassword(),
+				return new User(player.getusername(), player.getPassword(),
 						AuthorityUtils.createAuthorityList("USER"));
 			} else {
 				throw new UsernameNotFoundException("Unknown user: " + inputName);
@@ -239,6 +254,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
+				.antMatchers("/api/players").permitAll()
 				.antMatchers("/api/game_view/**").hasAuthority("USER")
 				.antMatchers("/web/game.html").hasAuthority("USER")
 				.antMatchers("/api/**").permitAll()

@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Gradle: org.springframework.boot:spring-boot-starter-logging:1.5.15.BUILD-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-logging/1.5.15.BUILD-SNAPSHOT/760fb29447dd73c6515b6e2f3803d797a5369c7/spring-boot-starter-logging-1.5.15.BUILD-SNAPSHOT.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-logging/1.5.15.BUILD-SNAPSHOT/836b5d085575c267270e9670638051e46c6a1415/spring-boot-starter-logging-1.5.15.BUILD-SNAPSHOT-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-logging/1.5.15.BUILD-SNAPSHOT/23a3e96e61e5d11128a3b1824f4ce10a2b35cc58/spring-boot-starter-logging-1.5.15.BUILD-SNAPSHOT-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-logging/1.5.15.BUILD-SNAPSHOT/299820bfc11a38e4577d8548f2f59e49358bcb0c/spring-boot-starter-logging-1.5.15.BUILD-SNAPSHOT-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-logging/1.5.15.BUILD-SNAPSHOT/714641ae95ca252cacf2546fcc34007e3fad78e4/spring-boot-starter-logging-1.5.15.BUILD-SNAPSHOT-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-logging/1.5.15.BUILD-SNAPSHOT/f8ea9df2cef2e7d6293fee255a5c096fc6ca032a/spring-boot-starter-logging-1.5.15.BUILD-SNAPSHOT-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

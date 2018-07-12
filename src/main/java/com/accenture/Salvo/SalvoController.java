@@ -124,28 +124,7 @@ public class SalvoController {
         return new ResponseEntity<>(makeMap("id", newPlayer.getId()), HttpStatus.CREATED);
     }
 
-    @RequestMapping (path = "/game/{id}/players", method = RequestMethod.POST)
-    public Object ships (@PathVariable("id") Long shipId) {
-        Player player = this.getAuthPlayer();
-        if (player == null) {
-            return new ResponseEntity<>(makeMap("error", "Please, log in"), HttpStatus.UNAUTHORIZED);
-        }
-        Game game = repoGames.findOne(shipId);
-        if (game == null) {
-            return new ResponseEntity<>(makeMap("error", "Incorrect game id"), HttpStatus.FORBIDDEN);
-        }
-        if (game.getDTO().size() == 2) {
-            return new ResponseEntity<>(makeMap("error", "Game is full"), HttpStatus.FORBIDDEN);
-        }
-
-        Date date = new Date();
-        GamePlayer gamePlayer = new GamePlayer(game, player, date);
-        repoGameplayer.save(gamePlayer);
-        return new ResponseEntity<>(makeMap("gpid", gamePlayer.getId()), HttpStatus.CREATED);
-
-    }
-
-    @RequestMapping (path = "/games/players/{gamePlayerId}/ships", method = RequestMethod.GET)
+    @RequestMapping (path = "/games/players/{id}/ships", method = RequestMethod.GET)
     public Object getShips (@PathVariable("id") Long shipID) {
         Map<String,Object> shipPlacement = new LinkedHashMap<>();
         Player player = this.getAuthPlayer();
@@ -154,14 +133,35 @@ public class SalvoController {
             return new ResponseEntity<>(makeMap("error", "Please log in"), HttpStatus.UNAUTHORIZED);
         }
         if (gamePlayer == null) {         //posible inminente
-            return new ResponseEntity<>(makeMap("error", "Game Player Doesn´t exist"), HttpStatus.z);
+            return new ResponseEntity<>(makeMap("error", "GamePlayer Doesn´t exist"), HttpStatus.UNAUTHORIZED);
         }
 
-        Date date = new Date();
-        GamePlayer gamePlayer = new GamePlayer(game, player, date);
-        repoGameplayer.save(gamePlayer);
-        return new ResponseEntity<>(makeMap("gpid", gamePlayer.getId()), HttpStatus.CREATED);
+        shipPlacement.put("ships", gamePlayer.getGamePlayerShipsDTO());
+        shipPlacement.put("gpid", gamePlayer.getId());
+        return shipPlacement;
+    }
 
+    @RequestMapping(path = "/games/players/{id}/ships", method = RequestMethod.POST)
+    public ResponseEntity<Map<String, Object>> setShips(@PathVariable long id, @RequestBody List<Ship> ships) {
+
+        GamePlayer gamePlayer = repoGameplayer.findById(id);
+        Player playerAuth = getAuthPlayer();
+        if (gamePlayer == null){
+            if (playerAuth == null || playerAuth.getId() != gamePlayer.getPlayer().getId()){
+                return new ResponseEntity<>(makeMap("error", "Unauthorized"), HttpStatus.UNAUTHORIZED);
+            }
+
+            if (gamePlayer.getShips().size() >= 5) {
+                return new ResponseEntity<>(makeMap("error", "Fleet completed"), HttpStatus.FORBIDDEN);
+            }
+
+            gamePlayer.addShips(ships);
+            repoGameplayer.save(gamePlayer);
+
+            return new ResponseEntity<>(makeMap("Success", "Ship created"),HttpStatus.CREATED);
+
+        }
+        return new ResponseEntity<>(makeMap("error", "Fleet complete"), HttpStatus.FORBIDDEN);
     }
 
     private Map<String, Object> makeMap(String key, Object value) {
