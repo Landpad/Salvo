@@ -701,7 +701,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Gradle.Salvo [clean]">
+  <component name="RunManager" selected="Gradle.Salvo [bootRun]">
     <configuration default="true" type="Application" factoryName="Application">
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
     </configuration>
