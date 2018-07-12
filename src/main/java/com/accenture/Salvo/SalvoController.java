@@ -252,7 +252,7 @@ public class SalvoController {
         dto.put("gamePlayers", this.gamePlayer(gameplayer.getGames()));
         dto.put("ships", gameplayer.getGamePlayerShipsDTO());
         dto.put("salvoes", gameplayer.getGames().getGameSalvosDTO());
-        dto.put("hits", )
+        dto.put("hits", )//hacer t5
         return dto;
     }
 
