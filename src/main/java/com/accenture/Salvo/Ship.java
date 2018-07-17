@@ -47,7 +47,7 @@ public class Ship {
         this.ship = ship;
     }
 
-    private List<String> getLocations() {
+    public List<String> getLocations() {
         return locations;
     }
 

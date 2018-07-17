@@ -98,7 +98,7 @@ public class Score {
 
     public Map<String,Object> getPlayerScore() {
         Map<String,Object> scoreList = new LinkedHashMap<>();
-        scoreList.put("game", this.getId());
+        scoreList.put("playerID", this.getId());
         scoreList.put("score", this.score);
         scoreList.put("finish date", this.finishdate);
         return scoreList;

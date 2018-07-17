@@ -252,9 +252,11 @@ public class SalvoController {
         dto.put("gamePlayers", this.gamePlayer(gameplayer.getGames()));
         dto.put("ships", gameplayer.getGamePlayerShipsDTO());
         dto.put("salvoes", gameplayer.getGames().getGameSalvosDTO());
-        dto.put("hits", )//hacer t5
+        dto.put("hits", gameplayer.hitsdto());
+//        dto.put("opponent")
         return dto;
     }
+
 
     private Player getAuthPlayer() {
         Authentication authentication1 = SecurityContextHolder.getContext().getAuthentication();
@@ -264,6 +266,8 @@ public class SalvoController {
             return repoPlayer.findByUserName(authentication1.getName());
         }
     }
+
+
 
 }
 

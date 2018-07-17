@@ -2,6 +2,8 @@ package com.accenture.Salvo;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import javax.persistence.*;
 import java.util.*;
@@ -41,7 +43,7 @@ public class GamePlayer {
         this.joinDate = new Date();
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
@@ -94,28 +96,43 @@ public class GamePlayer {
     }
 
 
-
     public Object gamePlayer() {
-            Map<String, Object> dto = new LinkedHashMap<>();
-            dto.put("id", this.getId());
-            dto.put("player", players.getPlayer());
-            dto.put("joindate", this.getJoinDate());
-            return dto;
-        }
+        Map<String, Object> dto = new LinkedHashMap<>();
+        dto.put("id", this.getId());
+        dto.put("player", players.getPlayer());
+        dto.put("joindate", this.getJoinDate());
+        return dto;
+    }
 
-    public void addShips (List<Ship> ships){
+    public void addShips(List<Ship> ships) {
         ships.forEach(ship -> {
             ship.setGameplayers(this);
             ships.add(ship);
         });
     }
 
-    public void addSalvo (Salvo salvo){
+    public void addSalvo(Salvo salvo) {
         salvo.setGameplayers(this);
         salvos.add(salvo);
     }
 
+    public GamePlayer opponentPlayer() {
+        return games.getGamePlayers().stream().filter(s -> s.getPlayer().getId() != getPlayer().getId()).findFirst().get();
     }
+
+    public Map<String, Object> hitsdto() {
+        Map<String, Object> hits = new LinkedHashMap<>();
+        hits.put("hits", )
+
+
+        public List<Object> self () {
+            Map<String, Object> selfie = new LinkedHashMap<>();
+            opponentPlayer().getSalvos().forEach(salvo ->
+                    selfie.put("self", salvo.getTurn()));
+            return selfie;
+        }
+    }}
+
 
 
 

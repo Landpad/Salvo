@@ -27,6 +27,7 @@ public class Game {
     public Game (Date creationDate){
         this.creationDate = creationDate;
     }
+
     public Set<GamePlayer> getGamePlayers() {
         return gamePlayers;
     }
@@ -61,6 +62,7 @@ public class Game {
 
 
 
+
     public Map<String, Object> getDTO() {
         Map<String, Object> dto = new LinkedHashMap<String, Object>();
         dto.put("id", this.getId());
@@ -70,6 +72,8 @@ public class Game {
 
         return dto;
     }
+
+
 
 
 
